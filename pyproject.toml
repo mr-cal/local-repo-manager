@@ -1,0 +1,17 @@
+[project]
+name = "local-repo-manager"
+version = "0.1.0"
+description = "Manage local git repositories."
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "rich>=14.0.0",
+    "ruff>=0.11.4",
+    "tomlkit>=0.13.2",
+]
+
+[project.scripts]
+local-repo-manager = "main:main"
+
+[tool.uv]
+package = true
