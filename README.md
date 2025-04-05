@@ -18,6 +18,12 @@ uv tool install local-repo-manager
 ```
 usage: local-repo-manager plan [-h] [--config-file CONFIG_FILE] [--repo-dir REPO_DIR] [--verbose]
 
+commands:
+  {plan,apply,update}
+    plan               Create a plan
+    apply              Apply a plan
+    update             Create or update a config file
+    
 options:
   -h, --help            show this help message and exit
   --config-file CONFIG_FILE
@@ -26,7 +32,7 @@ options:
   --verbose             enable verbose output
 ```
 
-local-repo-manager assumes a two-layer structure for repo management:
+local-repo-manager assumes a two-layer filetree for repo management:
 ```
 .
 └── dev
@@ -40,19 +46,19 @@ local-repo-manager assumes a two-layer structure for repo management:
 
 To generate a config file, run:
 ```bash
-local-repo-manager update --repo-dir <path-to-repo-dir>
+local-repo-manager update
 ```
 
 This will create a new config file with a list of repos.
 
 To see what changes will be made:
 ```bash
-local-repo-manager plan --repo-dir <path-to-repo-dir>
+local-repo-manager plan
 ```
 
 To apply the changes:
 ```bash
-local-repo-manager apply --repo-dir <path-to-repo-dir>
+local-repo-manager apply
 ```
 
 ## Configuration
@@ -68,29 +74,31 @@ repo-dir = "<path-to-repo-directory>"
 ### project
 
 ```toml
-[project.snapcraft]
-remotes = ["mr-cal", "lengau"]
-group = "craft"
-org = "canonical"
+[project."work.craft-store"]
+group = "work"
+name = "craft-store"
 envrc = true
+[project."work.craft-store".remotes]
+mr-cal = "git@github.com:mr-cal/craft-store.git"
+origin = "git@github.com:canonical/craft-store.git"
 ```
 
-#### project.<project-name>
+#### project.\<group>.\<name>
 
-The name of the repo in the remote and the local directory.
-
-#### remotes
-
-A list of remotes. `origin` is impicitly added to the list.
+The name of the local repository.
 
 #### group
 
 The subdirectory where the repo is organized under, such as `work` or `personal`.
 
-#### org
+#### name
 
-The owner of the repo. This determines the remote url of the origin.
+The name of the repository.
+
+#### project.\<group>.\<name>.remotes
+
+A mapping of remote names to URLs.
 
 #### envrc
 
-Whether the project has an `.envrc` file to source a venv in `.venv`.
+Whether the project has an `.envrc` file to source a venv in `.venv/`.
