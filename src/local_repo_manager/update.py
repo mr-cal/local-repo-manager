@@ -18,10 +18,14 @@ def get_project_info(
     project_dir: pathlib.Path, group_dir: pathlib.Path
 ) -> tuple[str, dict[str, Any] | None]:
     project = dict()
+    config_name = f"{group_dir.name}.{project_dir.name}"
     remotes = get_remotes(project_dir)
     if remotes:
         project["remotes"] = remotes
-    config_name = f"{group_dir.name}.{project_dir.name}"
+    else:
+        # no remotes means we can't clone anything
+        return config_name, None
+
     project["group"] = group_dir.name
     project["name"] = project_dir.name
     if envrc.has_envrc(project_dir):
