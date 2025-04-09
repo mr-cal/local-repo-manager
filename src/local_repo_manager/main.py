@@ -48,7 +48,7 @@ def main():
             projects=projects,
             repo_dir=repo_dir,
             action=args.command,
-            skip_fetch=args.skip_fetch,
+            skip_fetch=getattr(args, "skip_fetch", True),
         )
     else:
         parser.print_help()
